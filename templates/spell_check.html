@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Spelling Bee! - Spell Check{% endblock %}
+{% block content %}
+
+<div class="container" style="background-color: d6d6d6; border-style: solid; border-radius: 5px;">
+    <div class="row">
+        <br><br>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+     
+
+
+        
+    <form action="" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <input id="inputtext" type="text" placeholder="Input Text" name="inputtext" value="{{ request.form.inputtext }}" width="256" height="256">
+      <br>
+      <input class="btn btn-default" type="submit" value="Submit">
+    </form>
+
+    {% if textout %}
+      <p class="error" id="textout"><strong>Textout:</strong> {{ textout }} </p>
+    {% endif %}
+
+    {% if misspelled %}
+      <p class="error" id="misspelled"><strong>Mispelled:</strong> {{ misspelled }} </p>
+    {% endif %}
+
+
+    </div>
+
+
+    <div class="col-md-4">
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

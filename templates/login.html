@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Spelling Bee! - Login{% endblock %}
+{% block content %}
+
+<div class="container" style="background-color: d6d6d6; border-style: solid; border-radius: 5px;">
+    <div class="row">
+        <br><br>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+     
+
+
+            <form action="" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input id="uname" type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
+                <input id="pword" type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
+                <input id="2fa" type="password" placeholder="2fa" name="auth" value="{{ request.form.auth }}">
+
+                <br>
+                <input class="btn btn-default" type="submit" value="Login">
+            </form>
+
+            {% if id %}
+            <p class="error" id="result"><strong>Message:</strong> {{ id }} </p>
+            {% endif %}
+
+
+    </div>
+
+
+    <div class="col-md-4">
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

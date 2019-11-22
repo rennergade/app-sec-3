@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+
+    </head>
+    <body>
+
+      <header>
+            <div class="container" width="100%" style="background-color: d6d6d6; margin-bottom: 10px; border-style: solid; border-radius: 5px;">
+                <div class="row">
+                    <div class="col-md-4">
+                            <a href="/#">    <img src="/static/bee.jpg"></a>
+                    </div>
+
+                    <div class="col-md-4" text-center>
+                    <h1>Spelling Bee</h1>
+                    </div>
+
+                    <div class="col-md-4">
+                            <h4>
+                            {% if not loggedin %}
+                            <a href="/login">Login</a><br>
+                            <a href="/register">Register</a><br>
+                            {% endif %}
+
+                            {% if loggedin %}
+                            <a href="/spell_check">Spell Check</a><br>
+                            <a href="/logout">Logout</a><br>
+
+                            {% endif %}
+                            </h4>
+                    
+                    </div>
+
+                </div>
+            </div>
+
+      </header>
+
+
+      {% block content %}{% endblock %}
+
+    </body>
+</html>
