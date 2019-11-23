@@ -30,6 +30,7 @@
 
                             {% if loggedin %}
                             <a href="/spell_check">Spell Check</a><br>
+                            <a href={{ url_for('query_history', username=username) }}>History</a><br>
                             <a href="/logout">Logout</a><br>
 
                             {% endif %}

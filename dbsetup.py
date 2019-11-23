@@ -1,48 +1,45 @@
 import os
 import sys
-import datetime
-from sqlalchemy import Column, ForeignKey, Integer, String, Date, Boolean, Text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
-
-Base = declarative_base()
+from datetime import datetime
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 
-def get_date():
-    return datetime.datetime.now()
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///spell.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
 
-class User(Base):
+
+class User(db.Model):
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key=True)
-    username = Column(String(64), nullable=False)
-    password = Column(String(256), nullable=False)
-    twofa = Column(String(256), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), nullable=False)
+    password = db.Column(db.String(256), nullable=False)
+    twofa = db.Column(db.String(256), nullable=False)
 
-class Log(Base):
+class Log(db.Model):
     __tablename__ = 'log'
 
-    username = Column(String(64), nullable=False)
-    id = Column(Integer, primary_key=True)
-    logtype = Column(String(16), nullable=False)
-    time = Column(Date, default=get_date)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
+    username = db.Column(db.String(64), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    logtype = db.Column(db.String(16), nullable=False)
+    time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
-class Spell(Base):
+class Spell(db.Model):
     __tablename__ = 'results'
 
-    username = Column(String(64), nullable=False)
-    id = Column(Integer, primary_key=True)
-    subtext = Column(Text, nullable=False)
-    restext = Column(Text, nullable=False)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
+    username = db.Column(db.String(64), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    subtext = db.Column(db.Text, nullable=False)
+    restext = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
 
+if __name__ == "__main__":
+    db.create_all()
 
-engine = create_engine('sqlite:///spell.db')
-
-
-Base.metadata.create_all(engine)

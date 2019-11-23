@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Spelling Bee! - Register{% endblock %}
+{% block content %}
+
+<div class="container" style="background-color: d6d6d6; border-style: solid; border-radius: 5px;">
+    <div class="row">
+        <br><br>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+     
+        <div class = 'row' id="queryid">  {{query.id}} </div>
+        <div class = 'row' id="username">  {{query.username}} </div>
+        <div class = 'row' id="querytext"> {{query.subtext}} </div>
+        <div class = 'row' id="queryresults">  {{query.restext}} </div>
+        <br><br>
+        
+
+
+  
+    </div>
+
+
+    <div class="col-md-4">
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

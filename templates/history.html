@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Spelling Bee! - Register{% endblock %}
+{% block content %}
+
+<div class="container" style="background-color: d6d6d6; border-style: solid; border-radius: 5px;">
+    <div class="row">
+        <br><br>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+
+        {% if admin %}
+
+        <form action="" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input id="userquery" type="text" placeholder="Username" name="userquery" value="{{ request.form.userquery }}">
+            <br>
+            <input class="btn btn-default" type="submit" value="Query">
+        </form>
+        {% endif %}
+
+     
+        {% for q in history %}
+        <div class = 'row' id="query{{q.id}} "> 
+            <a href={{ url_for('query', username=q.username, id=q.id) }}>  {{q.id}}    -    {{q.username}}</a>
+        </div>
+        <br><br>
+        {% endfor %}
+        
+
+
+  
+    </div>
+
+
+    <div class="col-md-4">
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}
