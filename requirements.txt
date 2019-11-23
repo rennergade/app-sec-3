@@ -1,0 +1,5 @@
+pytest
+tox
+Flask
+bleach
+Flask-WTF
