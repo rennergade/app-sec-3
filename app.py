@@ -237,7 +237,7 @@ def create_app(config=None):
 
             return render_template('history.html', history=history, loggedin=loggedin, username=session['username'], admin=admin)
 
-    @app.route('/<username>/history/<int:id>')
+    @app.route('/<username>/history/query<int:id>')
     def query(username, id):
         loggedin=False
         # using flask 'session' for session hijacking
