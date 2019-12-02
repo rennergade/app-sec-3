@@ -12,6 +12,8 @@
     </div>
     <div class="col-md-4">
 
+        <p id="{{numqueries}}"> Number of Queries: {{numqueries}}</p>
+
         {% if admin %}
 
         <form action="" method="post">
@@ -24,7 +26,7 @@
 
      
         {% for q in history %}
-        <div class = 'row' id="query{{q.id}} "> 
+        <div class = 'row' id="query{{q.id}}"> 
             <a href={{ url_for('query', username=q.username, id=q.id) }}>  {{q.id}}    -    {{q.username}}</a>
         </div>
         <br><br>

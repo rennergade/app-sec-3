@@ -247,11 +247,14 @@ def create_app(config=None):
                     history = db.session.query(Spell).filter_by(username=bleached_query).all()
 
                 else: history = db.session.query(Spell).all()
-                return render_template('history.html', history=history, loggedin=loggedin, username=session['username'], admin=admin)
+                numqueries = len(history)
+                return render_template('history.html', history=history, numqueries=numqueries, loggedin=loggedin, username=session['username'], admin=admin)
 
             history = db.session.query(Spell).filter_by(username=username).all()
+            numqueries = len(history)
 
-            return render_template('history.html', history=history, loggedin=loggedin, username=session['username'], admin=admin)
+
+            return render_template('history.html', history=history, numqueries=numqueries, loggedin=loggedin, username=session['username'], admin=admin)
         
         return redirect('/login')
 
@@ -268,7 +271,7 @@ def create_app(config=None):
             admin=True
             if request.method == 'POST':
                 # bleach all input fileds to mediate XSS
-                bleached_query = bleach.clean(request.form['userquery'])
+                bleached_query = bleach.clean(request.form['userid'])
                 logins = db.session.query(Log).filter_by(username=bleached_query).all()
 
             else: logins = db.session.query(Log).all()

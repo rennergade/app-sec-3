@@ -24,7 +24,7 @@
 
         <ul>
             {% for log in logins %}
-            <li id="login{{log.id}}"> <p>{{log.id}} - {{log.u}} </p><p id="login{{log.id}}_time"> Login: {{log.logintime}} </p> <p id="logout{{log.id}}_time">Logout: {{log.loggouttime}}</p></li>
+            <li id="login{{log.id}}"> <p>{{log.id}} - {{log.username}} </p><p id="login{{log.id}}_time"> Login: {{log.logintime}} </p> <p id="logout{{log.id}}_time">Logout: {{log.logouttime}} </p></li>
             {% endfor %}
 
         </ul>
