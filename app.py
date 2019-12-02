@@ -6,6 +6,8 @@ import os
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 from dbsetup import User, Log, Spell
+from datetime import datetime
+
 
 
 def create_app(config=None):
@@ -65,16 +67,31 @@ def create_app(config=None):
 
         return 0
 
-    def db_login(username, logtype):
+    def db_login(username):
         user = db.session.query(User).filter_by(username=username).first()
         
         if not user: 
             print("User not found")
             return -1
 
-        newlog = Log(username=user.username, logtype=logtype, user_id=user.id)
+        newlog = Log(username=user.username, user_id=user.id)
 
         db.session.add(newlog)
+        db.session.commit()   
+
+        return 0
+
+    def db_logout(username):
+        user = db.session.query(User).filter_by(username=username).first()
+        
+        if not user: 
+            print("User not found")
+            return -1
+
+        lastuserlog = db.session.query(Log).filter_by(username=username).order_by(Log.id.desc()).first()
+
+        lastuserlog.logouttime = datetime.utcnow()
+
         db.session.commit()   
 
         return 0
@@ -116,7 +133,6 @@ def create_app(config=None):
 
     @app.route("/")
     def home():
-        print("home")
         loggedin = False
         username = ""
         if 'username' in session: 
@@ -165,7 +181,7 @@ def create_app(config=None):
                 session['username'] = bleached_uname
                 username = bleached_uname
                 app.logger.info('%s logged in successfully', bleached_uname)
-                db_login(bleached_uname, "in")
+                db_login(bleached_uname)
                 loggedin = True
             elif status == 1:
                 app.logger.error('%s log in failed', bleached_uname)
@@ -236,6 +252,32 @@ def create_app(config=None):
             history = db.session.query(Spell).filter_by(username=username).all()
 
             return render_template('history.html', history=history, loggedin=loggedin, username=session['username'], admin=admin)
+        
+        return redirect('/login')
+
+
+
+
+    @app.route('/<username>/login_history' , methods=['POST', 'GET'])
+    def login_history(username):
+        loggedin=False
+        admin=False
+        # using flask 'session' for session hijacking
+        if session['username'] == 'admin':
+            loggedin = True 
+            admin=True
+            if request.method == 'POST':
+                # bleach all input fileds to mediate XSS
+                bleached_query = bleach.clean(request.form['userquery'])
+                logins = db.session.query(Log).filter_by(username=bleached_query).all()
+
+            else: logins = db.session.query(Log).all()
+            return render_template('login_history.html', logins=logins, loggedin=loggedin, username=session['username'], admin=admin)
+
+
+        return redirect('/login')
+
+
 
     @app.route('/<username>/history/query<int:id>')
     def query(username, id):
@@ -248,7 +290,7 @@ def create_app(config=None):
 
             return render_template('query.html', query=query, loggedin=loggedin, username=session['username'])
 
-
+        return redirect('/login')
 
 
 
@@ -257,7 +299,7 @@ def create_app(config=None):
     def logout():
         username = session.pop('username', None)
         app.logger.info('user logged out')
-        db_login(username, "out")
+        db_logout(username)
 
         return render_template('home.html')
 

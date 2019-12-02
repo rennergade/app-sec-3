@@ -24,8 +24,8 @@ class Log(db.Model):
 
     username = db.Column(db.String(64), nullable=False)
     id = db.Column(db.Integer, primary_key=True)
-    logtype = db.Column(db.String(16), nullable=False)
-    time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    logintime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    logouttime = db.Column(db.DateTime, default=None)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(User)
 

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Spelling Bee! - History{% endblock %}
+{% block content %}
+
+<div class="container" style="background-color: d6d6d6; border-style: solid; border-radius: 5px;">
+    <div class="row">
+        <br><br>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+
+        {% if admin %}
+
+        <form action="" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input id="userid" type="text" placeholder="Username" name="userid" value="{{ request.form.userquery }}">
+            <br>
+            <input class="btn btn-default" type="submit" value="User ID">
+        </form>
+        {% endif %}
+
+        <ul>
+            {% for log in logins %}
+            <li id="login{{log.id}}"> <p>{{log.id}} - {{log.u}} </p><p id="login{{log.id}}_time"> Login: {{log.logintime}} </p> <p id="logout{{log.id}}_time">Logout: {{log.loggouttime}}</p></li>
+            {% endfor %}
+
+        </ul>
+
+        <br><br>
+        
+
+
+  
+    </div>
+
+
+    <div class="col-md-4">
+    </div>
+
+  </div>
+
+</div>
+
+
+{% endblock %}
