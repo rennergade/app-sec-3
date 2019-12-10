@@ -41,3 +41,23 @@ def test_spell_check(app):
     # print(dir(res), res.status_code)
     assert res.status_code == 404
 
+def test_admin_no_login(app):
+    res = app.get("/admin/history")
+    # print(dir(res), res.status_code)
+    assert res.status_code == 404
+
+def test_admin_query_no_login(app):
+    res = app.get("/admin/history/query1")
+    # print(dir(res), res.status_code)
+    assert res.status_code == 404
+
+def test_user_no_login(app):
+    res = app.get("/user1/history")
+    # print(dir(res), res.status_code)
+    assert res.status_code == 404
+
+def test_user_query_no_login(app):
+    res = app.get("/user1/history/query1")
+    # print(dir(res), res.status_code)
+    assert res.status_code == 404
+
